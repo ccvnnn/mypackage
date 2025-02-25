@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mypackage"
-dynamic = ["version"]
-description = ''
+version = "0.1"
+description = 'This is my first package description.'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
@@ -31,8 +31,7 @@ Documentation = "https://github.com/can/mypackage#readme"
 Issues = "https://github.com/can/mypackage/issues"
 Source = "https://github.com/can/mypackage"
 
-[tool.hatch.version]
-path = "src/mypackage/__about__.py"
+
 
 [tool.hatch.envs.types]
 extra-dependencies = [
