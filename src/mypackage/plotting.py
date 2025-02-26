@@ -33,3 +33,8 @@ def print_galton_board(data: List[int]) -> None:
             print(".", end="")
         # show total number of balls within each bin at the end of the line
         print(val)
+        
+# %%
+import numpy as np
+
+x = np.array([1,2,3,4])
