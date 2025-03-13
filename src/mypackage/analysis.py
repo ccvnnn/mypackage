@@ -12,31 +12,21 @@ class Analyzer:
     """Analyzer class gives us functions that are crucial for analysis of a dataset."""
     def __init__(self, data):
         self.data = data
-        self.results = {}
     
-    def statistics(self, data, column: str):
-        self.column = column
-        self.Mean = data[self.column].mean()
-        self.Median = data[self.column].median()
-        self.Std = data[self.column].std()
-        self.Var = data[self.column].var()
-        self.Mode = data[self.column].mode()
-        self.Max = data[self.column].max()
-        self.Min = data[self.column].min()
-    
-    def get_stats(self):
-        return data[self.column].describe()
+    def get_stats(self, column: str):
+        return data[column].describe()
 
-    
     def chi_square_test(self, column1: str, column2: str):
        contigency_table = pd.crosstab(self.data[column1], self.data[column2])
        chi2, p, dof, expected = chi2_contingency(contigency_table)
 
        alpha = 0.05
        if p < alpha: print(f"There is a statistically significant relationship between {column1} and {column2}")
-       else: print(f"There is no significant relationship between {column1} and {column2}")
-       print(f"Chi-Square Statistic: {chi2:.4f}")
-       print(f"P-value: {p}")
+       else: print(f"\n There is no significant relationship between {column1} and {column2} \n")
+       print(f"\n Chi-Square Statistic: {chi2:.4f}")
+       print(f"P-value: {p}\n\n")
+
+    
     
 # %%
 def all_sex(data):
@@ -46,8 +36,25 @@ def all_sex(data):
 # %%
 analyzer = Analyzer(data)
 
+# %%
 # test cases
 analyzer.chi_square_test(column1 = "Pclass", column2 = "Survived")
 analyzer.chi_square_test(column1 = "Age", column2 = "Survived")
 analyzer.chi_square_test(column1 = "Age", column2 = "Pclass")
 # %%
+# test cases
+analyzer.get_stats(column="Pclass")
+analyzer.get_stats(column="Age")
+analyzer.get_stats(column="Survived")
+
+# %%
+
+# check change in fare price with each class.
+# with what fare price is a passenger in class 1,2 or 3?
+
+# is the fare price different for each city where the passengers embarked
+## did passengers pay more for first class in southampton that passengers in compton?
+
+# %%
+def class_fare_categorization():
+    pass
