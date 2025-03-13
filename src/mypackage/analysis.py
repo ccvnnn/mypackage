@@ -38,15 +38,13 @@ analyzer = Analyzer(data)
 
 # %%
 # test cases
-analyzer.chi_square_test(column1 = "Pclass", column2 = "Survived")
-analyzer.chi_square_test(column1 = "Age", column2 = "Survived")
-analyzer.chi_square_test(column1 = "Age", column2 = "Pclass")
+analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
+analyzer.chi_square_test(column1 = "age", column2 = "survived")
+analyzer.chi_square_test(column1 = "age", column2 = "pclass")
 # %%
 # test cases
-analyzer.get_stats(column="Pclass")
-analyzer.get_stats(column="Age")
-analyzer.get_stats(column="Survived")
-
+analyzer.get_stats(column="pclass")
+analyzer.get_stats(column="age")
 # %%
 
 # check change in fare price with each class.
