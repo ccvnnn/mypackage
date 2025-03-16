@@ -4,9 +4,9 @@ import numpy as np
 import scipy
 from scipy.stats import chi2_contingency
 # %%
-data = pd.read_csv("titanic_new.csv", index_col=0)
+data = pd.read_csv("cleaned_data.csv", index_col=0)
 # %%
-data.head()
+data.head(n = 10)
 # %%
 class Analyzer:
     """Analyzer class gives us functions that are crucial for analysis of a dataset."""
