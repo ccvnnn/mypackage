@@ -29,13 +29,23 @@ class Analyzer:
        print(f"P-value: {p}\n\n")
     
 
-    def ccf_categorization():
-        grouped = data.groupby(["embark_town", "pclass"])["fare"]
+    def ccf_categorization(self):
+        grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
 
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
-        pivot_table = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
-
-        return pivot_table
+        pivot_table_mean = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
+        pivot_table_count = grouped_stats.pivot(index='embark_town', columns='pclass', values = 'count')
+        print("Average fare by embark town and passenger class:")
+        print(pivot_table_mean)
+  
+        print("\nPassenger count by embark town and passenger class:")
+        print(pivot_table_count)
+        # return pivot_table_mean, pivot_table_count
+    
+    def survival_rate(self, group_by_column : str):
+        """computes survival rates grouped by a specific column (categorial variable)"""
+        survival_rates = self.data.groupby(group_by_column)["survived"].mean()
+        return survival_rates
     
     
 # %%
@@ -45,6 +55,39 @@ def all_sex(data):
 # Diese Funktion ist einfach hier. Ich weiß jetzt nicht ob die relevant sein könnte deswegen steht diese hier.
 # %%
 analyzer = Analyzer(data)
+# %%
+# use the ccf_categorization method to analyze the average fare by embark town
+# and passenger class and the passenger count by embark town and passenger class
+analyzer.ccf_categorization()
+# Average fare by embark town and passenger class:
+# pclass                1          2          3
+# embark_town                                  
+# Cherbourg    104.718529  25.358335  11.214083
+# Queenstown    90.000000  12.350000  11.183393
+# Southampton   70.364862  20.327439  14.644083
+
+# Passenger count by embark town and passenger class:
+# pclass         1    2    3
+# embark_town               
+# Cherbourg     85   17   66
+# Queenstown     2    3   72
+# Southampton  127  164  353
+
+# %%
+# use the survival_rate method to compute survival rates
+# grouped by a categorial variable
+# here are some examples 
+analyzer.survival_rate("who")
+# who
+# child    0.590361
+# man      0.163873
+# woman    0.756458
+
+analyzer.survival_rate("pclass")
+# pclass
+# 1    0.629630
+# 2    0.472826
+# 3    0.242363
 
 # %%
 # use the chi_square_test method to check if there is a statistically significant
