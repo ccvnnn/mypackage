@@ -13,8 +13,10 @@ class Analyzer:
     def __init__(self, data):
         self.data = data
     
+    
     def get_stats(self, column: str):
         return data[column].describe()
+
 
     def chi_square_test(self, column1: str, column2: str):
        contigency_table = pd.crosstab(self.data[column1], self.data[column2])
@@ -25,7 +27,15 @@ class Analyzer:
        else: print(f"\n There is no significant relationship between {column1} and {column2} \n")
        print(f"\n Chi-Square Statistic: {chi2:.4f}")
        print(f"P-value: {p}\n\n")
+    
 
+    def ccf_categorization():
+        grouped = data.groupby(["embark_town", "pclass"])["fare"]
+
+        grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
+        pivot_table = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
+
+        return pivot_table
     
     
 # %%
@@ -74,5 +84,12 @@ analyzer.get_stats(column="embark_town")
 ## did passengers pay more for first class in southampton that passengers in compton?
 
 # %%
-def class_fare_categorization():
-    pass
+class_fare_df = data.groupby("pclass").agg(
+    avg_fare = ("fare", "mean"),
+    min_fare = ("fare", "min"),
+    max_fare = ("fare", "max")
+)
+
+class_fare_df
+
+# %%
