@@ -37,14 +37,34 @@ def all_sex(data):
 analyzer = Analyzer(data)
 
 # %%
-# test cases
+# use the chi_square_test method to check if there is a statistically significant
+# relationship between two categorial variables
+# here are some examples
 analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
-analyzer.chi_square_test(column1 = "age", column2 = "survived")
-analyzer.chi_square_test(column1 = "age", column2 = "pclass")
+# There is a statistically significant relationship between pclass and survived
+# Chi-Square Statistic: 102.8890
+# P-value: 4.549251711298793e-23 < 0.05
+
+analyzer.chi_square_test(column1 = "who", column2 = "survived")
+# There is a statistically significant relationship between who and survived
+# Chi-Square Statistic: 283.9231
+# P-value: 2.2227620817798914e-62 < 0.05
+
+
 # %%
-# test cases
+# use the get_stats method to receive basic statistics 
+# (mean, std, min, max, median etc.) for the respective column of the dataset
+# here are some examples
 analyzer.get_stats(column="pclass")
 analyzer.get_stats(column="age")
+analyzer.get_stats(column="survived")
+
+# this method also works for categorial variables like "sex" and "embark_town"
+# you will receive count (absolute frequency), unique (number of categories),
+# top (most frequent category) and freq (absolute frequency of the most frequent
+# category)
+analyzer.get_stats(column="sex") 
+analyzer.get_stats(column="embark_town")
 # %%
 
 # check change in fare price with each class.
