@@ -73,4 +73,4 @@ data.to_csv(output_file)
 # saved the cleaned data as a new csv file ("cleaned_data.csv") 
 # into the mypackage folder in the source folder
 
-
+# %%
