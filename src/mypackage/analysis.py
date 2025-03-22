@@ -43,7 +43,7 @@ class Analyzer:
         # return pivot_table_mean, pivot_table_count
     
     def survival_rate(self, group_by_column : str):
-        """computes survival rates grouped by a specific column (categorial variable)"""
+        """ computes survival rates grouped by a specific column (categorial variable)"""
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
     
