@@ -8,8 +8,13 @@ data = pd.read_csv("cleaned_data.csv", index_col=0)
 # %%
 # to make the visualizations easier to implement we'll use a class 'Visualizer' that inherits the functions of
 # the 'Analzer' class. This helps keep our code clean and makes it more efficient => no need to write the functions again.
+# %%
 class Visualizer(Analyzer):
     """Visualizer creates visualizations of the analyzed data through the 'Analyzer' class"""
+
+    def __init__(self, data):
+        super().__init__(data)
+
     def distribution_numerical(self, column : str):
         """ plots the distribution of a numerical variable """
         plt.figure(figsize = (8,5))
@@ -31,7 +36,39 @@ class Visualizer(Analyzer):
         plt.xticks(rotation = 360)
         plt.ylim((0,1))
         plt.show()
+
+    
+    def ccf_mean_heatmap(self):
+        pivot_table_mean = self.ccf_categorization_mean()
         
+        # Create a heatmap for average fare
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(pivot_table_mean, annot=True, fmt=".2f", cmap="coolwarm")
+        plt.title("Average Fare by Embark Town and Passenger Class")
+        plt.xlabel("Passenger Class")
+        plt.ylabel("Embark Town")
+        plt.show()
+    
+    def ccf_count_heatmap(self):
+        pivot_table_count = self.ccf_categorization_count()
+
+        plt.figure(figsize = (8,6))
+        sns.heatmap(pivot_table_count, annot=True, fmt=".2f", cmap="coolwarm")
+        plt.title("Passenger Count by Embark Town and Passenger Class")
+        plt.xlabel("Passenger Class")
+        plt.ylabel("Embark Town")
+        plt.show()
+    
+    def plot_contingency_heatmap(self, column1: str, column2: str):
+        contingency_table = pd.crosstab(self.data[column1], self.data[column2])
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(contingency_table, annot=True, cmap="coolwarm", fmt="d")
+        plt.title(f'Contingency Table: {column1} vs {column2}')
+        plt.xlabel(column2)
+        plt.ylabel(column1)
+        plt.show()
+
+
     
 # %%
 visualizer = Visualizer(data)
@@ -46,7 +83,12 @@ visualizer.distribution_numerical(column = "fare")
 visualizer.plot_survival_rate("who")
 visualizer.plot_survival_rate("sex")
 visualizer.plot_survival_rate("pclass") 
-
-# %%   
-        
-        
+   
+# %%
+# plot gives us a heatmap which showcases the average price of the different classes in different towns
+visualizer.ccf_mean_heatmap()
+# %%
+visualizer.ccf_count_heatmap()
+# %%
+# visualizes the correlation between two categorical variables using a heatmap
+visualizer.plot_contingency_heatmap("survived", "pclass")
