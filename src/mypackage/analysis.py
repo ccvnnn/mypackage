@@ -14,17 +14,122 @@ class Analyzer:
         self.data = data
     
     
+    
     def get_stats(self, column: str):
-        """gives all the necessary data from any column you want"""
+        """Provides statistical summaries for a specific column in the dataset.
+        
+        
+        Parameters
+        ----------
+        column: str
+            The name of the column to analyze. This should be a name of one 
+            of the columns in the Titanic dataset. 
+        
+        
+        Returns
+        -------
+        panda.Series
+            A Series containing basic statistics about the specific column.
+            
+            numerical variables use the following statistics:   
+            count: number of non-missing values
+            mean: average of the values
+            std: standard deviation
+            min: minimum value
+            25%, 50%, 75%: percentiles (quartiles and median)
+            max: maximum value
+            
+            categorial variables use the following statistics:
+            count: number of non-missing values
+            unique: number of categories
+            top: most frequent category
+            freq: frequency of the most frequent category
+            
+        Notes
+        -----
+        The output statistics depend on the type of the column as described
+        in 'Returns.'
+        
+        
+        Examples
+        --------
+        analyzer.get_stats(column="age")
+        
+        Output:
+        count    891.000000
+        mean      30.295365
+        std       13.058707
+        min        0.420000
+        25%       22.000000
+        50%       32.000000
+        75%       35.000000
+        max       80.000000
+        Name: age, dtype: float64
+        
+        
+        analyzer.get_stats(column="embark_town")
+        
+        count             889
+        unique              3
+        top       Southampton
+        freq              644
+        Name: embark_town, dtype: object
+        
+        """
         return self.data[column].describe()
 
-    def cramers_v(self, chi2, contingency_table):
+
+   
+    def cramers_v(self, chi2, contingency_table): 
         n = contingency_table.sum().sum()
         min_dim = min(contingency_table.shape) - 1
         return np.sqrt(chi2 / (n * min_dim))
     
+    
+    
     def chi_square_test(self, column1: str, column2: str):
-       """computes the correlation between two given columns"""
+       """Does a Chi-Square test to analyze the relationship 
+       between two categorical variables.
+       
+       
+       Parameters
+       ----------
+       column1, column2: str
+           The names of the columns to analyze. These should be two strings 
+           corresponding to the column names in the Titanic dataset.
+        
+        
+       Returns
+       -------
+       chi2: float
+           The Chi-Square statistic which measures the difference between
+           observed and expected frequencies.
+       p: float 
+           The p-value indicating statistical significance.
+       v: float
+           Cramer's V value which measures the strength of association 
+           between the two variables. 
+       
+           
+       Notes
+       -----
+       The Chi-Square test is only used for categorical variables. 
+       A p-value < 0.05 indicates a statistically significant relationship 
+       between the two categorical variables. 
+       Cramer's V value ranges from 0 to 1. Values close to 0 indicate weak 
+       association and values near 1 indicate a strong association.
+       
+       
+       Examples
+       --------
+       analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
+        
+       Ouptput:
+       There is a statistically significant relationship between pclass and survived
+       Out[13]: (102.88898875696056, 4.549251711298793e-23, 0.33981738800531175)                    
+          
+        
+       """
        contigency_table = pd.crosstab(self.data[column1], self.data[column2])
        chi2, p, dof, expected = chi2_contingency(contigency_table)
        v = self.cramers_v(chi2, contigency_table)
@@ -34,6 +139,8 @@ class Analyzer:
        else: print(f"\n There is no significant relationship between {column1} and {column2} \n")
        
        return chi2, p, v
+    
+    
     
     def ccf_categorization_mean(self):
         """City-Class-Fare categorization gives us the avergage/amount
@@ -103,35 +210,8 @@ analyzer.survival_rate("pclass")
 # 2    0.472826
 # 3    0.242363
 
-# %%
-# use the chi_square_test method to check if there is a statistically significant
-# relationship between two categorial variables
-# here are some examples
-
-analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
-# There is a statistically significant relationship between pclass and survived
-# Chi-Square Statistic: 102.8890
-# P-value: 4.549251711298793e-23 < 0.05
-
-analyzer.chi_square_test(column1 = "who", column2 = "survived")
-# There is a statistically significant relationship between who and survived
-# Chi-Square Statistic: 283.9231
-# P-value: 2.2227620817798914e-62 < 0.05
 
 
-# %%
-# use the get_stats method to receive basic statistics 
-# (mean, std, min, max, median etc.) for the respective column of the dataset
-# here are some examples
 
-analyzer.get_stats(column="pclass")
-analyzer.get_stats(column="age")
-analyzer.get_stats(column="survived")
 
-# this method also works for categorial variables like "sex" and "embark_town"
-# you will receive count (absolute frequency), unique (number of categories),
-# top (most frequent category) and freq (absolute frequency of the most frequent
-# category)
 
-analyzer.get_stats(column="sex") 
-analyzer.get_stats(column="embark_town")
