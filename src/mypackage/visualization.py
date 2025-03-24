@@ -1,6 +1,7 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import seaborn as sns
 from analysis import Analyzer 
 # %%
@@ -58,7 +59,8 @@ class Visualizer(Analyzer):
         plt.xlabel("Passenger Class")
         plt.ylabel("Embark Town")
         plt.show()
-    
+        
+        
     def plot_contingency_heatmap(self, column1: str, column2: str):
         contingency_table = pd.crosstab(self.data[column1], self.data[column2])
         plt.figure(figsize=(8, 6))
@@ -68,6 +70,28 @@ class Visualizer(Analyzer):
         plt.ylabel(column1)
         plt.show()
 
+    def basic_scatterplot(self, column1: str, column2: str):
+        plt.figure(figsize=(10, 6))
+        sns.regplot(x = column1, y = column2, data=data, scatter_kws={'alpha': 0.5})
+        plt.yscale('log')  # <-- This makes the y-axis logarithmic
+
+        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values
+        plt.yticks(fare_ticks, fare_ticks)
+        plt.title(f"Scatterplot of {column1} vs {column2}")
+        plt.xlabel(column1)
+        plt.ylabel(column2)
+        plt.show()
+    
+    def scatterplot_sorted_by(self, column1: str, column2: str, hue: str):
+        sns.lmplot(x = column1, y = column2, data=data, hue = hue, aspect=1.5, scatter_kws={'alpha': 0.5})
+        plt.yscale('log')  # <-- This makes the y-axis logarithmic
+
+        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values
+        plt.yticks(fare_ticks, fare_ticks)
+        plt.title(f"Scatterplot of {column1} vs {column2} by {hue}")
+        plt.xlabel(column1)
+        plt.ylabel(column2)
+        plt.show()
 
     
 # %%
@@ -92,3 +116,8 @@ visualizer.ccf_count_heatmap()
 # %%
 # visualizes the correlation between two categorical variables using a heatmap
 visualizer.plot_contingency_heatmap("survived", "pclass")
+# %%
+visualizer.basic_scatterplot("age", "fare")
+# %%
+visualizer.scatterplot_sorted_by("age","fare", hue="pclass")
+# %%

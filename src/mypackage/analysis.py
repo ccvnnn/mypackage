@@ -36,7 +36,9 @@ class Analyzer:
        return chi2, p, v
     
     def ccf_categorization_mean(self):
-        """gives us the avergae price paid per class for every embarked town"""
+        """City-Class-Fare categorization gives us the avergage/amount
+        price paid per class for every embarked town"""
+
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
         pivot_table_mean = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
@@ -133,5 +135,3 @@ analyzer.get_stats(column="survived")
 
 analyzer.get_stats(column="sex") 
 analyzer.get_stats(column="embark_town")
-
-# %%
