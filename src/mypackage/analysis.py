@@ -66,6 +66,7 @@ class Analyzer:
             unique: number of categories
             top: most frequent category
             freq: frequency of the most frequent category
+           
             
         Notes
         -----
