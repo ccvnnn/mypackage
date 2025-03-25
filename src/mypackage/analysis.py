@@ -9,8 +9,28 @@ data = pd.read_csv("cleaned_data.csv", index_col=0)
 data.head(n = 10)
 # %%
 class Analyzer:
-    """Analyzer class gives us functions that are crucial for analysis of a dataset."""
+    """The Analyzer class provides methods for statistical and categorical
+    analyses of the Titanic dataset.
+    
+    
+    Attributes
+    ----------
+    data: pandas.DataFrame
+        The Titanic dataset that is going to be analyzed.
+    
+    """
+    
+    
     def __init__(self, data):
+        """Initializes the class instance with the given (Titanic) dataset
+        
+        
+        Parameters
+        ----------
+        data: pandas.DataFrame
+            The Titanic dataset that is going to be analyzed. 
+            
+        """
         self.data = data
     
     
@@ -28,7 +48,7 @@ class Analyzer:
         
         Returns
         -------
-        panda.Series
+        pandas.Series
             A Series containing basic statistics about the specific column.
             
             numerical variables use the following statistics:
@@ -81,6 +101,35 @@ class Analyzer:
 
    
     def cramers_v(self, chi2, contingency_table):
+        """Calculates Cramer's V to measure the association between
+        two catgorical variables. 
+        
+        
+        Parameters
+        ----------
+        chi2: flaot
+            The Chi-Square statistic from the contingency table. 
+        contingency_table: pandas.DataFrame
+            The contigency table which contains the frequencies for 
+            categories of the two categorical variables. 
+        
+        
+        Returns
+        -------
+        float
+            Cramer's V value which measures the strength of association
+            between the two categorical variables.
+        
+        
+        Notes
+        -----
+        Cramer's V value ranges from 0 to 1. Values close to 0 indicate weak
+        association and values near 1 indicate a strong association.
+        This method is used for the Chi-Square test between two categorical
+        variables.
+
+        """
+        
         n = contingency_table.sum().sum()
         min_dim = min(contingency_table.shape) - 1
         return np.sqrt(chi2 / (n * min_dim))
@@ -215,11 +264,37 @@ class Analyzer:
         Parameters
         ----------
         group_by_column: str
+            The name of the column used to group survival rates.
+            This should be a categorical variable.   
             
             
+        Returns
+        -------
+        pandas.Series
+            A Series containing the survival rates for each category of the
+            categorical variable.
+            
         
+        Examples
+        --------
+        analyzer.survival_rate("who")
         
+        Output:
+        who
+        child    0.590361
+        man      0.163873
+        woman    0.756458
+        Name: survived, dtype: float64    
         
+        analyzer.survival_rate("pclass")
+        
+        Output:
+        pclass
+        1    0.629630
+        2    0.472826
+        3    0.242363
+        Name: survived, dtype: float64    
+            
         """
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
@@ -228,21 +303,5 @@ class Analyzer:
 # %%
 analyzer = Analyzer(data)
 
-# %%
-# use the survival_rate method to compute survival rates
-# grouped by a categorial variable
-# here are some examples
-
-analyzer.survival_rate("who")
-# who
-# child    0.590361
-# man      0.163873
-# woman    0.756458
-
-analyzer.survival_rate("pclass")
-# pclass
-# 1    0.629630
-# 2    0.472826
-# 3    0.242363
 # %%
 analyzer.chi_square_test("age", "fare")
