@@ -31,8 +31,10 @@ class Analyzer:
             The Titanic dataset that is going to be analyzed. 
             
         """
+        assert isinstance(data, pd.DataFrame), ("Data must be a pandas DataFrame")
+        assert not data.empty, "The dataset must not be empty."
         self.data = data
-    
+        
     
     
     def get_stats(self, column: str):
@@ -67,12 +69,14 @@ class Analyzer:
             
         Notes
         -----
-        The output statistics depend on the type of the column as described
-        in 'Returns.'
+        The output statistics depends on the type of the column as described
+        in 'Returns'.
         
         
         Examples
         --------
+        analyzer = Analyzer(data)
+        
         analyzer.get_stats(column="age")
         
         Output:
@@ -96,6 +100,8 @@ class Analyzer:
         Name: embark_town, dtype: object
         
         """
+        assert column in self.data.columns, f"Column '{column}' does not exist in the dataset."
+        
         return self.data[column].describe()
 
 
@@ -129,6 +135,8 @@ class Analyzer:
         variables.
 
         """
+        assert isinstance(chi2, (float, int)), "The 'chi2' value must be a numeric value."
+        assert contingency_table.size > 0, "Contingency table must not be empty."
         
         n = contingency_table.sum().sum()
         min_dim = min(contingency_table.shape) - 1
@@ -171,6 +179,8 @@ class Analyzer:
        
         Examples
         --------
+        analyzer = Analyzer(data)
+        
         analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
         
         Ouptput:
@@ -178,9 +188,15 @@ class Analyzer:
         Out[13]: (102.88898875696056, 4.549251711298793e-23, 0.33981738800531175)
         
         """
-        contigency_table = pd.crosstab(self.data[column1], self.data[column2])
-        chi2, p, dof, expected = chi2_contingency(contigency_table)
-        v = self.cramers_v(chi2, contigency_table)
+        assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
+        assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
+        
+        contingency_table = pd.crosstab(self.data[column1], self.data[column2])
+        
+        assert not contingency_table.empty, "Contingency table must not be empty."
+        
+        chi2, p, dof, expected = chi2_contingency(contingency_table)
+        v = self.cramers_v(chi2, contingency_table)
 
         alpha = 0.05
         if p < alpha: print(f"There is a statistically significant relationship between {column1} and {column2}")
@@ -207,6 +223,8 @@ class Analyzer:
         
         Examples
         --------
+        analyzer = Analyzer(data)
+        
         analyzer.ccf_categorization_mean()
         
         Output:
@@ -241,6 +259,8 @@ class Analyzer:
         
         Examples
         --------
+        analyzer = Analyzer(data)
+        
         analyzer.ccf_categorization_count()
         
         Output:
@@ -277,6 +297,8 @@ class Analyzer:
         
         Examples
         --------
+        analyzer = Analyzer(data)
+        
         analyzer.survival_rate("who")
         
         Output:
@@ -296,6 +318,8 @@ class Analyzer:
         Name: survived, dtype: float64    
             
         """
+        assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
+        
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
 
@@ -303,5 +327,3 @@ class Analyzer:
 # %%
 analyzer = Analyzer(data)
 
-# %%
-analyzer.chi_square_test("age", "fare")
