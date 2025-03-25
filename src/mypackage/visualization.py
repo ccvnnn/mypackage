@@ -8,7 +8,7 @@ from analysis import Analyzer
 data = pd.read_csv("cleaned_data.csv", index_col=0)
 # %%
 # to make the visualizations easier to implement we'll use a class 'Visualizer' that inherits the functions of
-# the 'Analzer' class. This helps keep our code clean and makes it more efficient => no need to write the functions again.
+# the 'Analyzer' class. This helps keep our code clean and makes it more efficient => no need to write the functions again.
 # %%
 class Visualizer(Analyzer):
     """Visualizer creates visualizations of the analyzed data through the 'Analyzer' class"""
@@ -120,4 +120,3 @@ visualizer.plot_contingency_heatmap("survived", "pclass")
 visualizer.basic_scatterplot("age", "fare")
 # %%
 visualizer.scatterplot_sorted_by("age","fare", hue="pclass")
-# %%
