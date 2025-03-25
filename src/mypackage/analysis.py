@@ -142,9 +142,32 @@ class Analyzer:
     
     
     def ccf_categorization_mean(self):
-        """City-Class-Fare categorization gives us the avergage/amount
-        price paid per class for every embarked town"""
-
+        """City-Class-Fare_categorization_mean computes the avergage
+        ticket price paid per class for every embarkation town
+        
+        
+        Returns
+        -------
+        pandas.DataFrame
+            pivot-table which includes
+            - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
+            - the three classes as columns (1st, 2nd, 3rd)
+            - the average ticket price (fare) paid per class for 
+              every embarkation town as values
+        
+        
+        Examples
+        --------
+        analyzer.ccf_categorization_mean()
+        
+        Output:
+        pclass                1          2          3
+        embark_town                                  
+        Cherbourg    104.718529  25.358335  11.214083
+        Queenstown    90.000000  12.350000  11.183393
+        Southampton   70.364862  20.327439  14.644083    
+        
+        """
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
         pivot_table_mean = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
@@ -153,6 +176,32 @@ class Analyzer:
     
 
     def ccf_categorization_count(self):
+        """City-Class-Fare_categorization_count computes the passenger count for
+        every passenger class by embarkation towns
+    
+        
+        Returns
+        -------
+        pandas.DataFrame
+            pivot-table which includes
+                - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
+                - the three classes as columns (1st, 2nd, 3rd)
+                - the passenger count for every passenger class 
+                  by embarkation towns as values
+        
+        
+        Examples
+        --------
+        analyzer.ccf_categorization_count()
+        
+        Output:
+        pclass         1    2    3
+        embark_town               
+        Cherbourg     85   17   66
+        Queenstown     2    3   72
+        Southampton  127  164  353    
+        
+        """
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
         pivot_table_count = grouped_stats.pivot(index='embark_town', columns='pclass', values = 'count')
@@ -160,32 +209,24 @@ class Analyzer:
     
 
     def survival_rate(self, group_by_column: str):
-        """ computes survival rates grouped by a specific column (categorial variable)"""
+        """Computes survival rates grouped by a categorical variable.
+        
+        
+        Parameters
+        ----------
+        group_by_column: str
+            
+            
+        
+        
+        
+        """
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
 
 
 # %%
 analyzer = Analyzer(data)
-# %%
-# use the ccf_categorization method to analyze the average fare by embark town
-# and passenger class and the passenger count by embark town and passenger "class"
-
-analyzer.ccf_categorization_mean()
-# Average fare by embark town and passenger class:
-# pclass                1          2          3
-# embark_town
-# Cherbourg    104.718529  25.358335  11.214083
-# Queenstown    90.000000  12.350000  11.183393
-# Southampton   70.364862  20.327439  14.644083
-
-analyzer.ccf_categorization_count()
-# Passenger count by embark town and passenger class:
-# pclass         1    2    3
-# embark_town
-# Cherbourg     85   17   66
-# Queenstown     2    3   72
-# Southampton  127  164  353
 
 # %%
 # use the survival_rate method to compute survival rates
