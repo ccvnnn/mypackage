@@ -11,10 +11,29 @@ data = pd.read_csv("cleaned_data.csv", index_col=0)
 # the 'Analyzer' class. This helps keep our code clean and makes it more efficient => no need to write the functions again.
 # %%
 class Visualizer(Analyzer):
-    """Visualizer creates visualizations of the analyzed data through the 'Analyzer' class"""
+    """Visualizer creates visualizations of the analyzed data through the 'Analyzer' class.
+    It includes methods for plotting distributions, generating heatmaps and
+    creating scatterplots.
+    
+    
+    Attributes
+    ----------
+    data: pandas.DataFrame
+        The Titanic dataset that is going to be analyzed.
+    
+    """
 
 
     def __init__(self, data):
+        """Initializes the class instance with the given (Titanic) dataset.
+        
+        
+        Parameters
+        ----------
+        data: pandas.DataFrame
+            The Titanic dataset that is going to be analyzed. 
+            
+        """
         super().__init__(data)
 
 
@@ -200,7 +219,36 @@ class Visualizer(Analyzer):
 
 
     def basic_scatterplot(self, column1: str, column2: str):
+        """Creates a scatterplot to visualize the relationship 
+        between two numerical variables.
         
+        
+        Parameters
+        ----------
+        column1: str
+            The name of the column that is used for the x-axis. 
+            This should be a numerical variable.
+        column2: str
+            The name of the column that is used for the y-axis.
+            This should also be a numerical variable.
+            
+        
+        Notes
+        -----
+        The y-axis is set to a logarithmic scale.
+        alpha = 0.5 is used for better visibility of the scatter points
+        
+        
+        Examples
+        --------
+        visualizer = Visualizer(data)
+        
+        visualizer.basic_scatterplot("age", "fare")
+        
+        This will generate a scatterplot and visualize how age relates to 
+        the ticket price.
+        
+        """
         plt.figure(figsize=(10, 6))
         sns.regplot(x = column1, y = column2, data=data, scatter_kws={'alpha': 0.5})
         plt.yscale('log')  # <-- This makes the y-axis logarithmic
@@ -213,6 +261,37 @@ class Visualizer(Analyzer):
         plt.show()
     
     def scatterplot_sorted_by(self, column1: str, column2: str, hue: str):
+        """Creates a scatterplot to visualize the relationship between two
+        numerical variables grouped by categorical variable.
+        
+        Parameters
+        ----------
+        column1: str
+            The name of the column that is used for the x-axis. 
+            This should be a numerical variable.
+        column2: str
+            The name of the column that is used for the y-axis.
+            This should also be a numerical variable.
+        hue: str
+            The name of the column representing the groups.
+            This should be a categorical variable.
+            
+        
+        Notes
+        -----
+        The y-axis is set to a logarithmic scale.
+        
+        
+        Examples
+        --------
+        visualizer = Visualizer(data)
+        
+        visualizer.scatterplot_sorted_by("age","fare", hue="pclass")
+        
+        This will generate a scatterplot and visualize how age relates to 
+        the ticket price grouped by the ticket price.
+        
+        """
         sns.lmplot(x = column1, y = column2, data=data, hue = hue, aspect=1.5, scatter_kws={'alpha': 0.5})
         plt.yscale('log')  # <-- This makes the y-axis logarithmic
 
