@@ -38,6 +38,8 @@ class Visualizer(Analyzer):
             The Titanic dataset that is going to be analyzed.
             
         """
+        assert isinstance(data, pd.DataFrame), ("Data must be a pandas DataFrame")
+        
         super().__init__(data)
 
 
@@ -73,6 +75,8 @@ class Visualizer(Analyzer):
         variables 'age' and 'fare' with an overlaid kde curve.
         
         """
+        assert column in self.data.columns, f"Column '{column}' does not exist in the dataset."
+        
         plt.figure(figsize = (8,5))
         sns.histplot(self.data[column], kde = True, color = "blue")
         plt.title(f"Distribution of {column}")
@@ -105,6 +109,8 @@ class Visualizer(Analyzer):
         specific categorical variable ('who', 'pclass').
         
         """
+        assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
+        
         survival_rates = self.survival_rate(group_by_column)
         plt.figure(figsize = (8,5))
         survival_rates.sort_values().plot(kind = "bar", color = "darkgrey", alpha = 0.7)
@@ -212,6 +218,9 @@ class Visualizer(Analyzer):
         - the frequencies for each combination of 'survived' and 'pclass' as values
         
         """
+        assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
+        assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
+        
         contingency_table = pd.crosstab(self.data[column1], self.data[column2])
         plt.figure(figsize=(8, 6))
         sns.heatmap(contingency_table, annot=True, cmap="coolwarm", fmt="d")
@@ -253,6 +262,9 @@ class Visualizer(Analyzer):
         the ticket price.
         
         """
+        assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
+        assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
+        
         plt.figure(figsize=(10, 6))
         sns.regplot(x = column1, y = column2, data=data, scatter_kws={'alpha': 0.5})
         plt.yscale('log')  # <-- This makes the y-axis logarithmic
@@ -296,6 +308,10 @@ class Visualizer(Analyzer):
         the ticket price grouped by the ticket price.
         
         """
+        assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
+        assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
+        assert hue in self.data.columns, f"Column '{hue}' does not exist in the dataset."
+       
         sns.lmplot(x = column1, y = column2, data=data, hue = hue, aspect=1.5, scatter_kws={'alpha': 0.5})
         plt.yscale('log')  # <-- This makes the y-axis logarithmic
 
