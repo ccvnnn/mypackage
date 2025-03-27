@@ -316,11 +316,11 @@ class Visualizer(Analyzer):
         plt.yscale('log')  # <-- This makes the y-axis logarithmic
 
         fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values
-        plt.yticks(fare_ticks, fare_ticks)
+        plt.yticks(fare_ticks, fare_ticks)  # setting the ticks for the y axis
         plt.title(f"Scatterplot of {column1} vs {column2} by {hue}")
-        plt.xlabel(column1)
-        plt.ylabel(column2)
-        plt.show()
+        plt.xlabel(column1)  # adding label to the x axis which is just the name of the given column
+        plt.ylabel(column2)  # adding label to the y axis which is just the name of the given column
+        plt.show()  # show the plot
 
     
 # %%

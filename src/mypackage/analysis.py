@@ -105,7 +105,7 @@ class Analyzer:
         
         """
         assert column in self.data.columns, f"Column '{column}' does not exist in the dataset."
-        
+        # easily get the most important statistic through the .descibe function
         return self.data[column].describe()
 
 
@@ -141,9 +141,12 @@ class Analyzer:
         """
         assert isinstance(chi2, (float, int)), "The 'chi2' value must be a numeric value."
         assert contingency_table.size > 0, "Contingency table must not be empty."
-        
+
+        # # Calculate the total number of observations in the contingency table
         n = contingency_table.sum().sum()
+        # Compute the degrees of freedom adjustment using the smallest dimension minus one
         min_dim = min(contingency_table.shape) - 1
+        # Return the normalized chi-square statistic as the square root of (chi2 / (n * min_dim))
         return np.sqrt(chi2 / (n * min_dim))
     
     
@@ -195,17 +198,23 @@ class Analyzer:
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
+        # Create a contingency table for the two specified columns
         contingency_table = pd.crosstab(self.data[column1], self.data[column2])
         
         assert not contingency_table.empty, "Contingency table must not be empty."
         
+        # Perform chi-square test to assess the independence between the two variables.
+        # This returns the chi-square statistic, p-value, degrees of freedom, and the expected frequencies.
         chi2, p, dof, expected = chi2_contingency(contingency_table)
+        # Calculate Cramér's V, which provides a measure of association between the two categorical variables.
         v = self.cramers_v(chi2, contingency_table)
 
         alpha = 0.05
+        # Determine if the result is statistically significant based on the p-value
         if p < alpha: print(f"There is a statistically significant relationship between {column1} and {column2}")
         else: print(f"\n There is no significant relationship between {column1} and {column2} \n")
        
+        # Return the chi-square statistic, p-value, and Cramér's V for further analysis or reporting.
         return chi2, p, v
     
     
@@ -239,10 +248,14 @@ class Analyzer:
         Southampton   70.364862  20.327439  14.644083
         
         """
+
+        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
+        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
+        # Pivot the table to have 'embark_town' as the index and 'pclass' as the columns, using the mean fare as values
         pivot_table_mean = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
-    
+        # Return the pivot table of mean fares
         return pivot_table_mean
     
 
@@ -275,8 +288,13 @@ class Analyzer:
         Southampton  127  164  353
         
         """
+
+        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
+        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
+        # Pivot the table to have 'embark_town' as the index and 'pclass' as the columns,
+        # using the count function to display passenger count
         pivot_table_count = grouped_stats.pivot(index='embark_town', columns='pclass', values = 'count')
         return pivot_table_count
     
@@ -323,7 +341,7 @@ class Analyzer:
             
         """
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
-        
+        # Calculate the survival rate by grouping the dataframe by "survived" and displaying the mean values
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
 

@@ -2,6 +2,6 @@
     "flake8.enabled": true,
     "flake8.args": [
         "--max-line-length",
-        "115",
+        "120",
     "--ignore=F401,E251,E302,E303,W293,E701,E231"]
 }
