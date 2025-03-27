@@ -1,10 +1,13 @@
 # %%
 import pandas as pd
 import numpy as np
+import os
 import scipy
 from scipy.stats import chi2_contingency
 # %%
-data = pd.read_csv("cleaned_data.csv", index_col=0)
+# data = pd.read_csv("cleaned_data.csv", index_col=0)
+csv_path = os.path.join(os.path.dirname(__file__), 'cleaned_data.csv')
+data = pd.read_csv(csv_path, index_col = 0)
 # %%
 data.head(n = 10)
 # %%
@@ -28,7 +31,7 @@ class Analyzer:
         Parameters
         ----------
         data: pandas.DataFrame
-            The Titanic dataset that is going to be analyzed. 
+            The Titanic dataset that is going to be analyzed.
             
         """
         assert isinstance(data, pd.DataFrame), ("Data must be a pandas DataFrame")
@@ -109,16 +112,16 @@ class Analyzer:
    
     def cramers_v(self, chi2, contingency_table):
         """Calculates Cramer's V to measure the association between
-        two catgorical variables. 
+        two catgorical variables.
         
         
         Parameters
         ----------
         chi2: flaot
-            The Chi-Square statistic from the contingency table. 
+            The Chi-Square statistic from the contingency table.
         contingency_table: pandas.DataFrame
-            The contigency table which contains the frequencies for 
-            categories of the two categorical variables. 
+            The contigency table which contains the frequencies for
+            categories of the two categorical variables.
         
         
         Returns
@@ -218,7 +221,7 @@ class Analyzer:
             pivot-table which includes
             - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
             - the three classes as columns (1st, 2nd, 3rd)
-            - the average ticket price (fare) paid per class for 
+            - the average ticket price (fare) paid per class for
               every embarkation town as values
         
         
@@ -230,10 +233,10 @@ class Analyzer:
         
         Output:
         pclass                1          2          3
-        embark_town                                  
+        embark_town
         Cherbourg    104.718529  25.358335  11.214083
         Queenstown    90.000000  12.350000  11.183393
-        Southampton   70.364862  20.327439  14.644083    
+        Southampton   70.364862  20.327439  14.644083
         
         """
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
@@ -254,7 +257,7 @@ class Analyzer:
             pivot-table which includes
                 - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
                 - the three classes as columns (1st, 2nd, 3rd)
-                - the passenger count for every passenger class 
+                - the passenger count for every passenger class
                   by embarkation towns as values
         
         
@@ -266,10 +269,10 @@ class Analyzer:
         
         Output:
         pclass         1    2    3
-        embark_town               
+        embark_town
         Cherbourg     85   17   66
         Queenstown     2    3   72
-        Southampton  127  164  353    
+        Southampton  127  164  353
         
         """
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
@@ -286,7 +289,7 @@ class Analyzer:
         ----------
         group_by_column: str
             The name of the column used to group survival rates.
-            This should be a categorical variable.   
+            This should be a categorical variable.
             
             
         Returns
@@ -307,7 +310,7 @@ class Analyzer:
         child    0.590361
         man      0.163873
         woman    0.756458
-        Name: survived, dtype: float64    
+        Name: survived, dtype: float64
         
         analyzer.survival_rate("pclass")
         
@@ -316,7 +319,7 @@ class Analyzer:
         1    0.629630
         2    0.472826
         3    0.242363
-        Name: survived, dtype: float64    
+        Name: survived, dtype: float64
             
         """
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
@@ -327,4 +330,3 @@ class Analyzer:
 
 # %%
 analyzer = Analyzer(data)
-
