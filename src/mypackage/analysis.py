@@ -9,6 +9,7 @@ from scipy.stats import chi2_contingency
 csv_path = os.path.join(os.path.dirname(__file__), 'cleaned_data.csv')
 data = pd.read_csv(csv_path, index_col = 0)
 # %%
+# show the first ten rows of the titanic dataset
 data.head(n = 10)
 # %%
 class Analyzer:
@@ -34,8 +35,11 @@ class Analyzer:
             The Titanic dataset that is going to be analyzed.
             
         """
+        # check if the dataset is stored as a pandas DataFrame
         assert isinstance(data, pd.DataFrame), ("Data must be a pandas DataFrame")
+        # ensure that the dataset is not empty
         assert not data.empty, "The dataset must not be empty."
+        
         self.data = data
         
     
@@ -104,8 +108,10 @@ class Analyzer:
         Name: embark_town, dtype: object
         
         """
+        # check if the passed column exists in the dataset
         assert column in self.data.columns, f"Column '{column}' does not exist in the dataset."
-        # easily get the most important statistic through the .descibe function
+        
+        # get the most important statistic through the .descibe function
         return self.data[column].describe()
 
 
@@ -139,12 +145,14 @@ class Analyzer:
         variables.
 
         """
+        # check if chi2 is a numerical value
         assert isinstance(chi2, (float, int)), "The 'chi2' value must be a numeric value."
+        # ensure that the contigency table is not empty
         assert contingency_table.size > 0, "Contingency table must not be empty."
 
-        # # Calculate the total number of observations in the contingency table
+        # Calculate the total number of observations in the contingency table.
         n = contingency_table.sum().sum()
-        # Compute the degrees of freedom adjustment using the smallest dimension minus one
+        # Compute the degrees of freedom adjustment using the smallest dimension minus one.
         min_dim = min(contingency_table.shape) - 1
         # Return the normalized chi-square statistic as the square root of (chi2 / (n * min_dim))
         return np.sqrt(chi2 / (n * min_dim))
@@ -195,6 +203,7 @@ class Analyzer:
         Out[13]: (102.88898875696056, 4.549251711298793e-23, 0.33981738800531175)
         
         """
+        # check if the passed columns exist in the dataset
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
@@ -249,13 +258,13 @@ class Analyzer:
         
         """
 
-        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation
+        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation.
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
-        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame
+        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame.
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
-        # Pivot the table to have 'embark_town' as the index and 'pclass' as the columns, using the mean fare as values
+        # Pivot the table to have 'embark_town' as the index and 'pclass' as the columns, using the mean fare as values.
         pivot_table_mean = grouped_stats.pivot(index='embark_town', columns='pclass', values='mean')
-        # Return the pivot table of mean fares
+        # Return the pivot table of mean fares.
         return pivot_table_mean
     
 
@@ -289,12 +298,12 @@ class Analyzer:
         
         """
 
-        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation
+        # Group the data by 'embark_town' and 'pclass', then select the 'fare' column for aggregation.
         grouped = self.data.groupby(["embark_town", "pclass"])["fare"]
-        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame
+        # Calculate statistics (mean, min, max, count) for each group and reset the index to flatten the DataFrame.
         grouped_stats = grouped.agg(["mean", "min", "max", "count"]).reset_index()
         # Pivot the table to have 'embark_town' as the index and 'pclass' as the columns,
-        # using the count function to display passenger count
+        # using the count function to display passenger count.
         pivot_table_count = grouped_stats.pivot(index='embark_town', columns='pclass', values = 'count')
         return pivot_table_count
     
@@ -340,8 +349,10 @@ class Analyzer:
         Name: survived, dtype: float64
             
         """
+        # check if the column used to group the survival rates exists in the dataset
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
-        # Calculate the survival rate by grouping the dataframe by "survived" and displaying the mean values
+        
+        # Calculate the survival rates by grouping the data by "survived". 
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
 
