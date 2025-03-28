@@ -38,6 +38,7 @@ class Visualizer(Analyzer):
             The Titanic dataset that is going to be analyzed.
             
         """
+        # check if the dataset is stored as a pandas DataFrame
         assert isinstance(data, pd.DataFrame), ("Data must be a pandas DataFrame")
         
         super().__init__(data)
@@ -71,18 +72,20 @@ class Visualizer(Analyzer):
        
         visualizer.distribution_numerical(column = "fare")
         
-        This will generate histograms that show the distribution of the numerical
+        This will generate a histogram that shows the distribution of the numerical
         variables 'age' and 'fare' with an overlaid kde curve.
         
         """
+        # check if the passed column exists in the dataset 
         assert column in self.data.columns, f"Column '{column}' does not exist in the dataset."
         
-        plt.figure(figsize = (8,5))
-        sns.histplot(self.data[column], kde = True, color = "blue")
-        plt.title(f"Distribution of {column}")
-        plt.xlabel(column)
-        plt.ylabel("frequency")
-        plt.show()
+        plt.figure(figsize = (8,5)) # creates a new figure 
+        sns.histplot(self.data[column], kde = True, color = "blue") # generates a
+        # histogram with an overlaid kde curve and sets the color to blue
+        plt.title(f"Distribution of {column}") # adds a title
+        plt.xlabel(column) # label the x-axis with column name
+        plt.ylabel("frequency") # adds label for the y-axis
+        plt.show() # displays the histogram and the kde curve
         
     
     
@@ -109,14 +112,15 @@ class Visualizer(Analyzer):
         specific categorical variable ('who', 'pclass').
         
         """
+        # check if the column used to group the survival rates exists in the dataset
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
         
         survival_rates = self.survival_rate(group_by_column)
-        plt.figure(figsize = (8,5))
+        plt.figure(figsize = (8,5)) # creates a new figure
         survival_rates.sort_values().plot(kind = "bar", color = "darkgrey", alpha = 0.7)
         plt.title(f"Survival rates grouped by {group_by_column}")
-        plt.xlabel(group_by_column)
-        plt.ylabel("Survival Rate")
+        plt.xlabel(group_by_column) # adds label to the x-axis
+        plt.ylabel("Survival Rate") # adds label to the y-axis
         plt.xticks(rotation = 360)
         plt.ylim((0,1))
         plt.show()
@@ -218,6 +222,7 @@ class Visualizer(Analyzer):
         - the frequencies for each combination of 'survived' and 'pclass' as values
         
         """
+        # check if the passed columns exist in the dataset
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
@@ -262,6 +267,7 @@ class Visualizer(Analyzer):
         the ticket price.
         
         """
+        # check if the passed columns exist in the dataset
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
@@ -308,6 +314,7 @@ class Visualizer(Analyzer):
         the ticket price grouped by the ticket price.
         
         """
+        # check if the passed columns exist in the dataset
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         assert hue in self.data.columns, f"Column '{hue}' does not exist in the dataset."
