@@ -115,15 +115,18 @@ class Visualizer(Analyzer):
         # check if the column used to group the survival rates exists in the dataset
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
         
+        # computes survival rates grouped by the specified column
         survival_rates = self.survival_rate(group_by_column)
+        
         plt.figure(figsize = (8,5)) # creates a new figure
         survival_rates.sort_values().plot(kind = "bar", color = "darkgrey", alpha = 0.7)
-        plt.title(f"Survival rates grouped by {group_by_column}")
+        # plots survival rates as a barplot, sorts values for better visualization
+        plt.title(f"Survival rates grouped by {group_by_column}") # adds title
         plt.xlabel(group_by_column) # adds label to the x-axis
         plt.ylabel("Survival Rate") # adds label to the y-axis
-        plt.xticks(rotation = 360)
-        plt.ylim((0,1))
-        plt.show()
+        plt.xticks(rotation = 360) # rotates labels for better visualization
+        plt.ylim((0,1)) # sets limits for the y-axis from 0 to 1 since survival rates are proportions 
+        plt.show() # displays the barplot
 
 
     
@@ -155,9 +158,9 @@ class Visualizer(Analyzer):
         # Create a heatmap for average fare
         plt.figure(figsize=(8, 6))
         sns.heatmap(pivot_table_mean, annot=True, fmt=".2f", cmap="coolwarm")
-        plt.title("Average Fare by Embark Town and Passenger Class")
-        plt.xlabel("Passenger Class")
-        plt.ylabel("Embark Town")
+        plt.title("Average Fare by Embark Town and Passenger Class") # adds title
+        plt.xlabel("Passenger Class") # adds label to the x-axis
+        plt.ylabel("Embark Town") # adds label to the y-axis
         plt.show()
     
     
@@ -189,9 +192,9 @@ class Visualizer(Analyzer):
 
         plt.figure(figsize = (8,6))
         sns.heatmap(pivot_table_count, annot=True, fmt=".2f", cmap="coolwarm")
-        plt.title("Passenger Count by Embark Town and Passenger Class")
-        plt.xlabel("Passenger Class")
-        plt.ylabel("Embark Town")
+        plt.title("Passenger Count by Embark Town and Passenger Class") # adds a title
+        plt.xlabel("Passenger Class") # labels the x-axis
+        plt.ylabel("Embark Town") # labels the y-axis
         plt.show()
         
         
@@ -229,9 +232,9 @@ class Visualizer(Analyzer):
         contingency_table = pd.crosstab(self.data[column1], self.data[column2])
         plt.figure(figsize=(8, 6))
         sns.heatmap(contingency_table, annot=True, cmap="coolwarm", fmt="d")
-        plt.title(f'Contingency Table: {column1} vs {column2}')
-        plt.xlabel(column2)
-        plt.ylabel(column1)
+        plt.title(f'Contingency Table: {column1} vs {column2}') # adds a title
+        plt.xlabel(column2) # labels the x-axis
+        plt.ylabel(column1) # labels the y-axis
         plt.show()
 
 
