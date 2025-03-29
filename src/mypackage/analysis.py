@@ -352,7 +352,7 @@ class Analyzer:
         # check if the column used to group the survival rates exists in the dataset
         assert group_by_column in self.data.columns, f"Column '{group_by_column}' does not exist in the dataset."
         
-        # Calculate the survival rates by grouping the data by "survived". 
+        # Calculate the survival rates by grouping the data by "survived".
         survival_rates = self.data.groupby(group_by_column)["survived"].mean()
         return survival_rates
 
