@@ -22,7 +22,9 @@ The **Visualizer** class is responsible for creating plots and visual representa
 
 ## Example
 First, instantiate the `Analyzer` class with your dataset:
-'''analyzer = Analyzer(data)'''
+```python
+analyzer = Analyzer(data)
+```
 
 Then, call the `chi_square_test` method by providing the two column names as parameters. For example, to test the relationship between `"pclass"` and `"survived"`, run:
 ```python
