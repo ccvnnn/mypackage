@@ -230,17 +230,17 @@ class Analyzer:
     
     def ccf_categorization_mean(self):
         """City-Class-Fare_categorization_mean computes the avergage
-        ticket price paid per class for every embarkation town
+        ticket price paid per class for every embarked town
         
         
         Returns
         -------
         pandas.DataFrame
             pivot-table which includes
-            - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
+            - the three embarked towns as rows (Cherbourg, Queenstown, Southampton)
             - the three classes as columns (1st, 2nd, 3rd)
             - the average ticket price (fare) paid per class for
-              every embarkation town as values
+              every embarked town as values
         
         
         Examples
@@ -270,17 +270,17 @@ class Analyzer:
 
     def ccf_categorization_count(self):
         """City-Class-Fare_categorization_count computes the passenger count for
-        every passenger class by embarkation towns
+        every passenger class by embarked towns
     
         
         Returns
         -------
         pandas.DataFrame
             pivot-table which includes
-                - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
+                - the three embarked towns as rows (Cherbourg, Queenstown, Southampton)
                 - the three classes as columns (1st, 2nd, 3rd)
                 - the passenger count for every passenger class
-                  by embarkation towns as values
+                  by embarked towns as values
         
         
         Examples
