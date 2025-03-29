@@ -21,19 +21,27 @@ The **Visualizer** class is responsible for creating plots and visual representa
 
 
 ## Example
-We give the `analyzer` variable our class with the data
+First, instantiate the `Analyzer` class with your dataset:
 '''analyzer = Analyzer(data)'''
 
-Than we call our `chi_square_test` function which takes two columns as parameters
-'''analyzer.chi_square_test(column1 = "pclass", column2 = "survived")'''
+Then, call the `chi_square_test` method by providing the two column names as parameters. For example, to test the relationship between `"pclass"` and `"survived"`, run:
+```python
+analyzer.chi_square_test(column1 = "pclass", column2 = "survived")
+```
 
-The output displays: first, if there is a significant relationship between the two given columns and second, the chi2, p and v values.
-'''
+The function returns two pieces of information:
+1.	A message indicating whether there is a statistically significant relationship between the two columns.
+2.	A tuple containing:
+    - chi2: The chi-square statistic.
+    - p: The p-value.
+    - v: The Cramér’s V value.
+
+Example output:
+```python
 Ouptput:
 There is a statistically significant relationship between pclass and survived
 Out[13]: (102.88898875696056, 4.549251711298793e-23, 0.33981738800531175)
-
-'''
+```
 
 ## Installation
 
