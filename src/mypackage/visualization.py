@@ -153,15 +153,20 @@ class Visualizer(Analyzer):
         - the average ticket price by embarkation town and passenger class as values
         
         """
+        # generates the pivot table using the 'ccf_categorization_mean' method
+        # from the Analyzer class
+        # The pivot table contains average ticket prices grouped by 
+        # embarkation town and passenger class.
         pivot_table_mean = self.ccf_categorization_mean()
         
-        # Create a heatmap for average fare
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(pivot_table_mean, annot=True, fmt=".2f", cmap="coolwarm")
+        plt.figure(figsize=(8, 6)) # creates a new figure
+        sns.heatmap(pivot_table_mean, annot=True, fmt=".2f", cmap="coolwarm") 
+        # creates a heatmap to visualize the average ticket prices, annot = True
+        # to display the values inside the cells 
         plt.title("Average Fare by Embark Town and Passenger Class") # adds title
         plt.xlabel("Passenger Class") # adds label to the x-axis
         plt.ylabel("Embark Town") # adds label to the y-axis
-        plt.show()
+        plt.show() # displays the heatmap 
     
     
     
@@ -188,14 +193,20 @@ class Visualizer(Analyzer):
         - the passenger count by embarkation town and passenger class as values
         
         """
+        # generates the pivot table using the 'ccf_categorization_count' method
+        # from the Analyzer class 
+        # The pivot table contains the passenger count grouped by 
+        # embarkation town and passenger class. 
         pivot_table_count = self.ccf_categorization_count()
 
-        plt.figure(figsize = (8,6))
+        plt.figure(figsize = (8,6)) # creates a new figure
         sns.heatmap(pivot_table_count, annot=True, fmt=".2f", cmap="coolwarm")
+        # creates a heatmap to visualize the passenger count, annot = True to 
+        # display the values inside the cells
         plt.title("Passenger Count by Embark Town and Passenger Class") # adds a title
         plt.xlabel("Passenger Class") # labels the x-axis
         plt.ylabel("Embark Town") # labels the y-axis
-        plt.show()
+        plt.show() # displays the heatmap
         
         
     def plot_contingency_heatmap(self, column1: str, column2: str):
@@ -229,13 +240,18 @@ class Visualizer(Analyzer):
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
+        # generates a contingency table for every combination of values 
+        # between column1 and column2
         contingency_table = pd.crosstab(self.data[column1], self.data[column2])
-        plt.figure(figsize=(8, 6))
+        
+        plt.figure(figsize=(8, 6)) # creates a new figure
         sns.heatmap(contingency_table, annot=True, cmap="coolwarm", fmt="d")
+        # generates a heatmap to visualize the relationship between two categorical variables,
+        # annot = True to display the frequencies inside the cells
         plt.title(f'Contingency Table: {column1} vs {column2}') # adds a title
-        plt.xlabel(column2) # labels the x-axis
-        plt.ylabel(column1) # labels the y-axis
-        plt.show()
+        plt.xlabel(column2) # labels the x-axis with the name of column2
+        plt.ylabel(column1) # labels the y-axis with the name of column1
+        plt.show() # displays the heatmap
 
 
 
@@ -274,16 +290,21 @@ class Visualizer(Analyzer):
         assert column1 in self.data.columns, f"Column '{column1}' does not exist in the dataset."
         assert column2 in self.data.columns, f"Column '{column2}' does not exist in the dataset."
         
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(10, 6)) # creates a new figure
         sns.regplot(x = column1, y = column2, data=data, scatter_kws={'alpha': 0.5})
-        plt.yscale('log')  # <-- This makes the y-axis logarithmic
+        # generates a scatterplot using seaborn, scatter_kws={'alpha': 0.5} sets
+        # transparency of points to 0.5 for better visualization
+        plt.yscale('log')  # makes the y-axis logarithmic
 
-        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values
+        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values (ticket prices)
+        # for better visualization
         plt.yticks(fare_ticks, fare_ticks)
-        plt.title(f"Scatterplot of {column1} vs {column2}")
-        plt.xlabel(column1)
-        plt.ylabel(column2)
-        plt.show()
+        plt.title(f"Scatterplot of {column1} vs {column2}") # adds title
+        plt.xlabel(column1) # adds label to the x-axis using the name of column1
+        plt.ylabel(column2) # adds label to the y-axis using the name of column2
+        plt.show() # displays the scatterplot
+    
+    
     
     def scatterplot_sorted_by(self, column1: str, column2: str, hue: str):
         """Creates a scatterplot to visualize the relationship between two
@@ -323,17 +344,22 @@ class Visualizer(Analyzer):
         assert hue in self.data.columns, f"Column '{hue}' does not exist in the dataset."
        
         sns.lmplot(x = column1, y = column2, data=data, hue = hue, aspect=1.5, scatter_kws={'alpha': 0.5})
-        plt.yscale('log')  # <-- This makes the y-axis logarithmic
+        # generates a scatterplot using seaborn, scatter_kws={'alpha': 0.5} sets
+        # transparency of points to 0.5 for better visualization
+        plt.yscale('log')  # makes the y-axis logarithmic
 
-        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values
-        plt.yticks(fare_ticks, fare_ticks)  # setting the ticks for the y axis
-        plt.title(f"Scatterplot of {column1} vs {column2} by {hue}")
-        plt.xlabel(column1)  # adding label to the x axis which is just the name of the given column
-        plt.ylabel(column2)  # adding label to the y axis which is just the name of the given column
-        plt.show()  # show the plot
+        fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500] # example values (ticket prices)
+        # for better visualization
+        plt.yticks(fare_ticks, fare_ticks) # setting the ticks for the y axis
+        plt.title(f"Scatterplot of {column1} vs {column2} by {hue}") # adds title
+        plt.xlabel(column1) # adds label to the x-axis using the name of column1
+        plt.ylabel(column2) # adds label to the y-axis using the name of column2
+        plt.show() # displays the scatterplot
 
     
 # %%
+# The following part includes a few function calls to check our written methods.
+
 visualizer = Visualizer(data)
 # %%
 # use the distribution_numerical method to plot the distribution of a
