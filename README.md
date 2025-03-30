@@ -19,6 +19,8 @@ The package comprises two classes, each containing approximately 6–7 functions
 
 The **Visualizer** class is responsible for creating plots and visual representations of the analysis. Some functions in this class accept outputs from the Analyzer, while others can operate independently based on user-defined parameters.
 
+Additionally to the two classes, there is a helper file called "organize_data" which processes the given dataset by deleting one column if two columns share the same information (for example "pclass" and "class"). In addition, missing ages are filled with the average age of men and women. Finally, the cleaned dataset is saved as a new cleaned_data.csv file.
+
 
 ## Example
 First, instantiate the `Analyzer` class with your dataset:
