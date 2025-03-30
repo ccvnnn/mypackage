@@ -84,7 +84,7 @@ class Visualizer(Analyzer):
         # histogram with an overlaid kde curve and sets the color to blue
         
         plt.title(f"Distribution of {column}")  # adds a title
-        plt.xlabel(column)  # label the x-axis with column name 
+        plt.xlabel(column)  # label the x-axis with column name
         plt.ylabel("frequency")  # adds label for the y-axis
         plt.show()  # displays the histogram and the kde curve
         
