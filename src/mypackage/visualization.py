@@ -82,8 +82,9 @@ class Visualizer(Analyzer):
         plt.figure(figsize = (8,5))  # creates a new figure
         sns.histplot(self.data[column], kde = True, color = "blue")  # generates a
         # histogram with an overlaid kde curve and sets the color to blue
+        
         plt.title(f"Distribution of {column}")  # adds a title
-        plt.xlabel(column)  # label the x-axis with column name
+        plt.xlabel(column)  # label the x-axis with column name 
         plt.ylabel("frequency")  # adds label for the y-axis
         plt.show()  # displays the histogram and the kde curve
         
@@ -121,9 +122,11 @@ class Visualizer(Analyzer):
         plt.figure(figsize = (8,5))  # creates a new figure
         survival_rates.sort_values().plot(kind = "bar", color = "darkgrey", alpha = 0.7)
         # plots survival rates as a barplot, sorts values for better visualization
+        
         plt.title(f"Survival rates grouped by {group_by_column}")  # adds title
         plt.xlabel(group_by_column)  # adds label to the x-axis
         plt.ylabel("Survival Rate")  # adds label to the y-axis
+        
         plt.xticks(rotation = 360)  # rotates labels for better visualization
         plt.ylim((0,1))  # sets limits for the y-axis from 0 to 1 since survival rates are proportions
         plt.show()  # displays the barplot
@@ -148,7 +151,7 @@ class Visualizer(Analyzer):
         visualizer.ccf_mean_heatmap()
         
         This will generate a heatmap which contains
-        - the three embarked towns as rows (Cherbourg, Queenstown, Southampton)
+        - the three embarkation towns as rows (Cherbourg, Queenstown, Southampton)
         - the three passenger classes as columns (1st, 2nd, 3rd)
         - the average ticket price by embarked town and passenger class as values
         
@@ -156,7 +159,7 @@ class Visualizer(Analyzer):
         # generates the pivot table using the 'ccf_categorization_mean' method
         # from the Analyzer class
         # The pivot table contains average ticket prices grouped by
-        # embarked town and passenger class.
+        # embarkation town and passenger class.
         pivot_table_mean = self.ccf_categorization_mean()
         
         plt.figure(figsize=(8, 6))  # creates a new figure
