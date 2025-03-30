@@ -166,6 +166,7 @@ class Visualizer(Analyzer):
         sns.heatmap(pivot_table_mean, annot=True, fmt=".2f", cmap="coolwarm")
         # creates a heatmap to visualize the average ticket prices, annot = True
         # to display the values inside the cells
+        
         plt.title("Average Fare by Embark Town and Passenger Class")  # adds title
         plt.xlabel("Passenger Class")  # adds label to the x-axis
         plt.ylabel("Embark Town")  # adds label to the y-axis
@@ -251,6 +252,7 @@ class Visualizer(Analyzer):
         sns.heatmap(contingency_table, annot=True, cmap="coolwarm", fmt="d")
         # generates a heatmap to visualize the relationship between two categorical variables,
         # annot = True to display the frequencies inside the cells
+        
         plt.title(f'Contingency Table: {column1} vs {column2}')  # adds a title
         plt.xlabel(column2)  # labels the x-axis with the name of column2
         plt.ylabel(column1)  # labels the y-axis with the name of column1
@@ -302,6 +304,7 @@ class Visualizer(Analyzer):
         fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values (ticket prices)
         # for better visualization
         plt.yticks(fare_ticks, fare_ticks)
+        
         plt.title(f"Scatterplot of {column1} vs {column2}")  # adds title
         plt.xlabel(column1)  # adds label to the x-axis using the name of column1
         plt.ylabel(column2)  # adds label to the y-axis using the name of column2
@@ -354,6 +357,7 @@ class Visualizer(Analyzer):
         fare_ticks = [1, 5, 10, 20, 50, 100, 200, 500]  # example values (ticket prices)
         # for better visualization
         plt.yticks(fare_ticks, fare_ticks)  # setting the ticks for the y axis
+        
         plt.title(f"Scatterplot of {column1} vs {column2} by {hue}")  # adds title
         plt.xlabel(column1)  # adds label to the x-axis using the name of column1
         plt.ylabel(column2)  # adds label to the y-axis using the name of column2
